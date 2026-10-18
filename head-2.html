@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>🍙Kanto Travel | 關東之旅</title>
+    
+    <!-- 加入 Web App 支援標籤，隱藏網址列讓它像原生 App -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="關東之旅">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#F9F8F6">
+    
+    <!-- App 圖示 (這裡使用自動生成的圖片，如果您有自己的圖片可以替換網址) -->
+    <link rel="apple-touch-icon" href="https://placehold.co/180x180/6B8EAC/FFFFFF?text=Kanto">
+    <link rel="icon" type="image/png" href="https://placehold.co/192x192/6B8EAC/FFFFFF?text=Kanto">
+    
+    <!-- Google Fonts: Noto Sans TC -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Noto Sans TC"', 'sans-serif'],
+                    },
+                    colors: {
+                        muji: {
+                            bg: '#F9F8F6',      // 經典米白背景
+                            card: '#FFFFFF',
+                            text: '#3E3A39',    // 深炭灰字體
+                            subtext: '#8A8683', // 淺灰字體
+                            blue: '#6B8EAC',    // 柔和灰藍色 (主色調)
+                            blueLight: '#E8EDF2',
+                            border: '#EBEAE6',
+                            highlight: '#C86D6D' // 柔和的磚紅色(用於重要提醒)
+                        }
+                    },
+                    boxShadow: {
+                        'muji': '0 2px 8px rgba(0, 0, 0, 0.04)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #F9F8F6;
+            color: #3E3A39;
+            -webkit-tap-highlight-color: transparent;
+        }
+        /* 隱藏滾動條但保留滾動功能 */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        /* 頁籤切換動畫 */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* 時間軸樣式 */
+        .timeline-line {
+            position: absolute;
+            left: 11px;
+            top: 10px;
+            bottom: -20px;
+            width: 2px;
+            background-color: #EBEAE6;
+            z-index: 0;
+        }
+        .timeline-dot {
+            position: relative;
+            z-index: 1;
+        }
+        /* 按鈕點擊反饋 */
+        .btn-active:active {
+            transform: scale(0.97);
+        }
+    </style>
+</head>
+<body class="font-sans antialiased pb-24 selection:bg-muji-blue selection:text-white">
+
+    <header class="sticky top-0 z-50 bg-muji-bg/90 backdrop-blur-md border-b border-muji-border px-6 py-4">
+        <div class="flex justify-between items-center">
+            <div>
+                <h1 class="text-xl font-bold text-muji-text tracking-wide" id="header-title">行程總覽</h1>
+                <p class="text-xs text-muji-subtext mt-1">2026.10.22 - 10.27 • 關東</p>
+            </div>
+            <div class="text-muji-blue">
+                <i class="fa-solid fa-plane-departure text-xl"></i>
+            </div>
+        </div>
+    </header>
+
+    <main class="w-full max-w-2xl mx-auto">
+        
+        <!-- Tab 1: PLAN -->
+        <section id="tab-plan" class="tab-content active px-4 py-6 space-y-8">
+            
+            <!-- Day 1 -->
+            <div class="relative">
+                <div class="sticky top-[72px] z-10 bg-muji-bg/95 py-2 mb-4">
+                    <h2 class="text-lg font-bold text-muji-blue"><i class="fa-regular fa-calendar-check mr-2"></i>Day 1：10/22 (四) 抵達日本 ➔ 鎌倉夕照</h2>
+                </div>
+                <div class="space-y-6 relative pl-2">
+                    <div class="timeline-line"></div>
+                    
+                    <!-- Item -->
+                    <div class="relative flex gap-4">
+                        <div class="timeline-dot w-6 h-6 rounded-full bg-muji-blue text-white flex items-center justify-center text-xs mt-0.5 shadow-sm ring-4 ring-muji-bg">
+                            <i class="fa-solid fa-plane"></i>
+                        </div>
+                        <div class="flex-1 bg-muji-card p-4 rounded-xl shadow-muji border border-muji-border">
+                            <div class="text-sm font-bold text-muji-highlight mb-1">06:45 - 11:15</div>
+                            <h3 class="font-medium mb-1">酷航 Scoot B787 (台北 ➔ 成田T1)</h3>
+                            <p class="text-sm text-muji-subtext mb-3">抵達後辦理入境，搭乘 N'EX 與電車前往鎌倉長谷。</p>
+                        </div>
+                    </div>
+
+                    <!-- Item -->
+                    <div class="relative flex gap-4">
+                        <div class="timeline-dot w-6 h-6 rounded-full bg-white border-2 border-muji-blue flex items-center justify-center mt-0.5 ring-4 ring-muji-bg">
+                            <div class="w-2 h-2 rounded-full bg-muji-blue"></div>
+                        </div>
+                        <div class="flex-1 bg-muji-card p-4 rounded-xl shadow-muji border border-muji-border">
+                            <div class="text-sm text-muji-subtext mb-1">15:30</div>
+                            <h3 class="font-medium mb-2">鎌倉長谷旅宿 Check-in</h3>
+                            <p class="text-sm text-muji-subtext mb-3"><i class="fa-solid fa-location-dot mr-1"></i>2-chōme-18-4 Hase, Kamakura</p>
+                            <a href="https://maps.google.com/?q=2-chōme-18-4+Hase,+Kamakura" target="_blank" class="inline-block bg-muji-blueLight text-muji-blue text-xs px-3 py-1.5 rounded-full font-medium btn-active"><i class="fa-solid fa-map-location-dot mr-1"></i>開啟地圖</a>
+                        </div>
+                    </div>
+
+                    <!-- Item -->
+                    <div class="relative flex gap-4">
+                        <div class="timeline-dot w-6 h-6 rounded-full bg-white border-2 border-muji-blue flex items-center justify-center mt-0.5 ring-4 ring-muji-bg">
+                            <div class="w-2 h-2 rounded-full bg-muji-blue"></div>
+                        </div>
+                        <div class="flex-1 bg-muji-card p-4 rounded-xl shadow-muji border border-muji-border">
+                            <div class="text-sm text-muji-subtext mb-1">16:00 - 17:30</div>
+                            <h3 class="font-medium mb-2">大福墊高德院、長谷寺、御齡神社</h3>
+                            <p class="text-sm text-muji-subtext mb-3">極樂寺車站周邊漫步。晚餐推薦：Cafe Yoridocoro、鎌倉松原庵 (蕎麥麵)。</p>
+                            <div class="flex gap-2">
+                                <a href="https://maps.google.com/?q=鎌倉松原庵" target="_blank" class="bg-gray-100 text-gray-600 text-xs px-3 py-1.5 rounded-full btn-active"><i class="fa-solid fa-utensils mr-1"></i>松原庵地圖</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Day 2 -->
+            <div class="relative mt-8">
+                <div class="sticky top-[72px] z-10 bg-muji-bg/95 py-2 mb-4">
+                    <h2 class="text-lg font-bold text-muji-blue"><i class="fa-regular fa-calendar-check mr-2"></i>Day 2：10/23 (五) 湘南海岸 ➔ 江之島</h2>
+                </div>
+                <div class="space-y-6 relative pl-2">
+                    <div class="timeline-line"></div>
+                    
+                    <div class="relative flex gap-4">
+                        <div class="timeline-dot w-6 h-6 rounded-full bg-white border-2 border-muji-blue flex items-center justify-center mt-0.5 ring-4 ring-muji-bg">
+                            <div class="w-2 h-2 rounded-full bg-muji-blue"></div>
+                        </div>
+                        <div class="flex-1 bg-muji-card p-4 rounded-xl shadow-muji border border-muji-border">
+                            <div class="text-sm text-muji-subtext mb-1">06:00 - 07:15</div>
+                            <h3 class="font-medium"><i class="fa-solid fa-person-running mr-1 text-muji-blue"></i>晨跑：鎌倉海岸線 (11km)</h3>
+                        </div>
+                    </div>
+
+                    <div class="relative flex gap-4">
+                        <div class="timeline-dot w-6 h-6 rounded-full bg-white border-2 border-muji-blue flex items-center justify-center mt-0.5 ring-4 ring-muji-bg">
+                            <div class="w-2 h-2 rounded-full bg-muji-blue"></div>
+                        </div>
+                        <div class="flex-1 bg-muji-card p-4 rounded-xl shadow-muji border border-muji-border">
+                            <div class="text-sm text-muji-subtext mb-1">09:00 - 10:00</div>
+                            <h3 class="font-medium">鎌倉高校前</h3>
+                            <p class="text-sm text-muji-subtext mt-1">經典平交道拍照，欣賞湘南海岸。</p>
+                        </div>
+                    </div>
+
+                    <div class="relative flex gap-4">
+                        <div class="timeline-dot w-6 h-6 rounded-full bg-white border-2 border-muji-blue flex items-center justify-center mt-0.5 ring-4 ring-muji-bg">
+                            <div class="w-2 h-2 rounded-full bg-muji-blue"></div>
+                        </div>
+                        <div class="flex-1 bg-muji-card p-4 rounded-xl shadow-muji border border-muji-border">
+                            <div class="text-sm text-muji-subtext mb-1">10:15 - 14:30</div>
+                            <h3 class="font-medium mb-2">江之島深度巡禮</h3>
+                            <ul class="text-sm text-muji-subtext list-disc pl-4 space-y-1 mb-3">
+                                <li>漫步仲見世通老街</li>
+                                <li>參拜江島神社 (可搭手扶梯)</li>
+                                <li>登上海燈塔 (Sea Candle) 俯瞰相模灣</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="relative flex gap-4">
+                        <div class="timeline-dot w-6 h-6 rounded-full bg-white border-2 border-muji-blue flex items-center justify-center mt-0.5 ring-4 ring-muji-bg">
+                            <div class="w-2 h-2 rounded-full bg-muji-blue"></div>
+                        </div>
+                        <div class="flex-1 bg-muji-card p-4 rounded-xl shadow-muji border border-muji-border">
+                            <div class="text-sm text-muji-subtext mb-1">15:00 - 17:00</div>
+                            <h3 class="font-medium mb-2">白燈塔夕陽與美食</h3>
+                            <p class="text-sm text-muji-subtext mb-3">海岸線散步享用下午茶。<br><b>晚餐推薦：</b>Tobiccho (とびっちょ)<br><b>點心：</b>Nakamuraya Honten Teahouse, tenzan lab.</p>
+                            <a href="https://maps.google.com/?q=とびっちょ+江の島" target="_blank" class="inline-block bg-muji-blueLight text-muji-blue text-xs px-3 py-1.5 rounded-full font-medium btn-active"><i class="fa-solid fa-map-location-dot mr-1"></i>Tobiccho地圖</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Day 3 -->
+            <div class="relative mt-8">
+                <div class="sticky top-[72px] z-10 bg-muji-bg/95 py-2 mb-4">
+                    <h2 class="text-lg font-bold text-muji-blue"><i class="fa-regular fa-calendar-check mr-2"></i>Day 3：10/24 (六) 古都鎌倉漫步</h2>
+                </div>
+                <div class="space-y-6 relative pl-2">
+                    <div class="timeline-line"></div>
+                    
+                    <div class="relative flex gap-4">
+                        <div class="timeline-dot w-6 h-6 rounded-full bg-white border-2 border-muji-blue flex items-center justify-center mt-0.5 ring-4 ring-muji-bg">
+                            <div class="w-2 h-2 rounded-full bg-muji-blue"></div>
+                        </div>
+                        <div class="flex-1 bg-muji-card p-4 rounded-xl shadow-muji border border-muji-border">
+                            <div class="text-sm text-muji-subtext mb-1">09:30 - 12:30</div>
+                            <h3 class="font-medium">鶴岡八幡宮 & 小町通老街</h3>
+                            <p class="text-sm text-muji-subtext mt-1">參拜後逛文創小店與吃點心。</p>
+                        </div>
+                    </div>
+
+                    <div class="relative flex gap-4">
+                        <div class="timeline-dot w-6 h-6 rounded-full bg-white border-2 border-muji-blue flex items-center justify-center mt-0.5 ring-4 ring-muji-bg">
+                            <div class="w-2 h-2 rounded-full bg-muji-blue"></div>
+                        </div>
+                        <div class="flex-1 bg-muji-card p-4 rounded-xl shadow-muji border border-muji-border">
+                            <div class="text-sm text-muji-subtext mb-1">13:00 - 16:00</div>
+                            <h3 class="font-medium mb-2">北鎌倉 報國寺 (竹寺)</h3>
+                            <p class="text-sm text-muji-subtext mb-3">途中需購買 Mon Péché Mignon 麵包。</p>
+                            <a href="https://maps.google.com/?q=4+Chome-3-17+Yukinoshita,+Kamakura" target="_blank" class="inline-block bg-muji-blueLight text-muji-blue text-xs px-3 py-1.5 rounded-full font-medium btn-active"><i class="fa-solid fa-bread-slice mr-1"></i>麵包店地圖</a>
+                        </div>
+                    </div>
+
+                    <div class="relative flex gap-4">
+                        <div class="timeline-dot w-6 h-6 rounded-full bg-white border-2 border-muji-blue flex items-center justify-center mt-0.5 ring-4 ring-muji-bg">
+                            <div class="w-2 h-2 rounded-full bg-muji-blue"></div>
+                        </div>
+                        <div class="flex-1 bg-muji-card p-4 rounded-xl shadow-muji border border-muji-border">
+                            <div class="text-sm text-muji-subtext mb-1">16:00 - 17:00</div>
+                            <h3 class="font-medium">稻村崎公園</h3>
+                            <p class="text-sm text-muji-subtext mt-1">傍晚前往公園。晚餐推薦：紫陽花洋食、在地居酒屋。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Day 4 -->
+            <div class="relative mt-8">
+                <div class="sticky top-[72px] z-10 bg-muji-bg/95 py-2 mb-4">
+                    <h2 class="text-lg font-bold text-muji-blue"><i class="fa-regular fa-calendar-check mr-2"></i>Day 4：10/25 (日) 前往輕井澤</h2>
+                </div>
+                <div class="space-y-6 relative pl-2">
+                    <div class="timeline-line"></div>
+                    
+                    <div class="relative flex gap-4">
+                        <div class="timeline-dot w-6 h-6 rounded-full bg-muji-blue text-white flex items-center justify-center mt-0.5 ring-4 ring-muji-bg text-xs">
+                            <i class="fa-solid fa-train"></i>
+                        </div>
+                        <div class="flex-1 bg-muji-card p-4 rounded-xl shadow-muji border border-muji-border border-l-4 border-l-muji-highlight">
+                            <div class="text-sm font-bold text-muji-highlight mb-1">08:30 出發</div>
+                            <h3 class="font-medium mb-1">搭乘新幹線至輕井澤</h3>
+                            <p class="text-sm text-muji-subtext mb-2">搭電車至東京站，轉乘北陸新幹線。<br>
+                            <span class="inline-block bg-red-50 text-red-600 px-2 py-1 rounded mt-1 font-bold">11:04 asama 609 | 9號車 10番A席</span><br>
+                            12:15 抵達輕井澤。</p>
+                        </div>
+                    </div>
+
+                    <div class="relative flex gap-4">
+                        <div class="timeline-dot w-6 h-6 rounded-full bg-white border-2 border-muji-blue flex items-center justify-center mt-0.5 ring-4 ring-muji-bg">
+                            <div class="w-2 h-2 rounded-full bg-muji-blue"></div>
+                        </div>
+                        <div class="flex-1 bg-muji-card p-4 rounded-xl shadow-muji border border-muji-border">
+                            <div class="text-sm text-muji-subtext mb-1">12:20</div>
+                            <h3 class="font-medium mb-2">輕井澤 APA 飯店寄放行李</h3>
+                            <a href="https://maps.google.com/?q=APA+Hotel+Karuizawa" target="_blank" class="inline-block bg-muji-blueLight text-muji-blue text-xs px-3 py-1.5 rounded-full font-medium btn-active"><i class="fa-solid fa-hotel mr-1"></i>APA地圖</a>
+                        </div>
+                    </div>
+
+                    <div class="relative flex gap-4">
+                        <div class="timeline-dot w-6 h-6 rounded-full bg-white border-2 border-muji-blue flex items-center justify-center mt-0.5 ring-4 ring-muji-bg">
+                            <div class="w-2 h-2 rounded-full bg-muji-blue"></div>
+                        </div>
+                        <div class="flex-1 bg-muji-card p-4 rounded-xl shadow-muji border border-muji-border">
+                            <div class="text-sm text-muji-subtext mb-1">13:00 - 17:00</div>
+                            <h3 class="font-medium mb-2">舊輕井澤銀座通 & 雲場池</h3>
+                            <p class="text-sm text-muji-subtext mb-3">採買手作果醬、腸詰屋香腸、淺野屋麵包。漫步至雲場池欣賞紅葉。<br><b>美食推薦：</b>川上庵 (蕎麥麵)、澤屋果醬。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Day 5 -->
+            <div class="relative mt-8">
+                <div class="sticky top-[72px] z-10 bg-muji-bg/95 py-2 mb-4">
+                    <h2 class="text-lg font-bold text-muji-blue"><i class="fa-regular fa-calendar-check mr-2"></i>Day 5：10/26 (一) 購物日</h2>
+                </div>
+                <div class="space-y-6 relative pl-2">
+                    <div class="timeline-line"></div>
+                    
+                    <div class="relative flex gap-4">
+                        <div class="timeline-dot w-6 h-6 rounded-full bg-white border-2 border-muji-blue flex items-center justify-center mt-0.5 ring-4 ring-muji-bg">
+                            <div class="w-2 h-2 rounded-full bg-muji-blue"></div>
+                        </div>
+                        <div class="flex-1 bg-muji-card p-4 rounded-xl shadow-muji border border-muji-border">
+                            <div class="text-sm text-muji-subtext mb-1">10:00 - 19:00</div>
+                            <h3 class="font-medium mb-2">輕井澤王子購物廣場 Outlet</h3>
+                            <p class="text-sm text-muji-subtext mb-3"><b>必逛：</b>mont-bell 專賣店 (East 東區)。中途可回 APA 飯店放戰利品。<br><b>美食推薦：</b>明治亭 (醬汁豬排飯)、烤肉隨緣。</p>
+                            <a href="https://maps.google.com/?q=Karuizawa+Prince+Shopping+Plaza" target="_blank" class="inline-block bg-muji-blueLight text-muji-blue text-xs px-3 py-1.5 rounded-full font-medium btn-active"><i class="fa-solid fa-bag-shopping mr-1"></i>Outlet地圖</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Day 6 -->
+            <div class="relative mt-8 mb-8">
+                <div class="sticky top-[72px] z-10 bg-muji-bg/95 py-2 mb-4">
+                    <h2 class="text-lg font-bold text-muji-blue"><i class="fa-regular fa-calendar-check mr-2"></i>Day 6：10/27 (二) 古鎮散步與返台</h2>
+                </div>
+                <div class="space-y-6 relative pl-2">
+                    <div class="timeline-line"></div>
+                    
+                    <div class="relative flex gap-4">
+                        <div class="timeline-dot w-6 h-6 rounded-full bg-white border-2 border-muji-blue flex items-center justify-center mt-0.5 ring-4 ring-muji-bg">
+                            <div class="w-2 h-2 rounded-full bg-muji-blue"></div>
+                        </div>
+                        <div class="flex-1 bg-muji-card p-4 rounded-xl shadow-muji border border-muji-border">
+                            <div class="text-sm text-muji-subtext mb-1">09:00 - 11:30</div>
+                            <h3 class="font-medium mb-1">中輕井澤教堂景點</h3>
+                            <p class="text-sm text-muji-subtext">退房寄放行李。參觀高原教堂、石之教堂。<br>榆樹街小鎮丸山咖啡享用早午餐。</p>
+                        </div>
+                    </div>
+
+                    <div class="relative flex gap-4">
+                        <div class="timeline-dot w-6 h-6 rounded-full bg-muji-blue text-white flex items-center justify-center mt-0.5 ring-4 ring-muji-bg text-xs">
+                            <i class="fa-solid fa-train"></i>
+                        </div>
+                        <div class="flex-1 bg-muji-card p-4 rounded-xl shadow-muji border border-muji-border border-l-4 border-l-muji-highlight">
+                            <div class="text-sm font-bold text-muji-highlight mb-1">12:00 返程列車</div>
+                            <h3 class="font-medium mb-1">新幹線 ➔ 東京 ➔ 成田機場</h3>
+                            <p class="text-sm text-muji-subtext mb-2">
+                                <span class="block bg-gray-100 px-2 py-1 rounded mt-1 mb-1">12:00 asama 614 | 10號車 10番A席 (13:12抵達東京)</span>
+                                <span class="block bg-gray-100 px-2 py-1 rounded">13:33 N'EX 29 | 11號車 14番A席 (14:31抵達機場)</span>
+                            </p>
+                            <p class="text-sm text-muji-subtext">抵達後大件行李寄存機場置物櫃。</p>
+                        </div>
+                    </div>
+
+                    <div class="relative flex gap-4">
+                        <div class="timeline-dot w-6 h-6 rounded-full bg-white border-2 border-muji-blue flex items-center justify-center mt-0.5 ring-4 ring-muji-bg">
+                            <div class="w-2 h-2 rounded-full bg-muji-blue"></div>
+                        </div>
+                        <div class="flex-1 bg-muji-card p-4 rounded-xl shadow-muji border border-muji-border">
+                            <div class="text-sm text-muji-subtext mb-1">15:00 - 17:00</div>
+                            <h3 class="font-medium mb-2">成田山表參道與新勝寺</h3>
+                            <p class="text-sm text-muji-subtext mb-3">漫步江戶風情老街，參拜千年古寺。</p>
+                            <div class="text-sm text-muji-highlight font-medium mt-2"><i class="fa-solid fa-clock mr-1"></i>17:30 需搭車返回成田機場</div>
+                        </div>
+                    </div>
+
+                    <div class="relative flex gap-4">
+                        <div class="timeline-dot w-6 h-6 rounded-full bg-muji-blue text-white flex items-center justify-center mt-0.5 ring-4 ring-muji-bg text-xs">
+                            <i class="fa-solid fa-plane"></i>
+                        </div>
+                        <div class="flex-1 bg-muji-card p-4 rounded-xl shadow-muji border border-muji-border">
+                            <div class="text-sm font-bold text-muji-highlight mb-1">20:20 - 23:25</div>
+                            <h3 class="font-medium mb-1">長榮航空 BR195 (成田 ➔ 台北)</h3>
+                            <p class="text-sm text-muji-subtext">順暢返台，結束美好旅程。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </section>
+
+        <section id="tab-guide" class="tab-content px-4 py-6 space-y-8">
+            
+            <div class="bg-white rounded-2xl overflow-hidden shadow-muji border border-muji-border">
+                <div class="h-48 bg-gray-200 relative">
+                    <img src="https://placehold.co/800x400/2C4C6B/FFFFFF?text=Enoshima" alt="Enoshima" class="w-full h-full object-cover">
+                    <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/60 to-transparent p-4">
+                        <h2 class="text-white text-xl font-bold tracking-widest">江之島深度巡禮</h2>
+                        <p class="text-white/80 text-sm">相模灣上的神聖信仰與絕美夕照</p>
+                    </div>
+                </div>
+                <div class="p-5 space-y-4">
+                    <p class="text-sm text-muji-text leading-relaxed">
+                        江之島自古以來便是修驗道的靈地，島上的「江島神社」分為邊津宮、中津宮與奧津宮，供奉著宗像三女神。傳說中這裡也是弁財天降臨之地，掌管著音樂、智慧與財富。
+                    </p>
+                    <div class="bg-muji-bg p-4 rounded-lg">
+                        <h3 class="font-bold text-muji-blue text-sm mb-2"><i class="fa-solid fa-lightbulb mr-2"></i>冷知識：江之島的手扶梯 (Escar)</h3>
+                        <p class="text-xs text-muji-subtext leading-relaxed">
+                            這是日本第一座戶外收費手扶梯，建於1959年。為了不破壞自然景觀，手扶梯完全包覆在頂部之中。搭乘它可以節省約20分鐘的爬坡時間，輕鬆抵達山頂的 Sea Candle 海燈塔。
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl overflow-hidden shadow-muji border border-muji-border">
+                <div class="p-5">
+                    <h2 class="text-xl font-bold tracking-widest text-muji-text mb-1">輕井澤舊銀座通</h2>
+                    <p class="text-muji-blue text-sm mb-4">西洋文化與和風交織的避暑勝地</p>
+                    <p class="text-sm text-muji-text leading-relaxed mb-4">
+                        19世紀末，加拿大傳教士亞歷山大·蕭 (Alexander Croft Shaw) 發現這裡的氣候酷似故鄉蘇格蘭，於是建了別墅，開啟了輕井澤作為避暑勝地的歷史。舊銀座通上充滿了果醬店、洋食館與木工藝品。
+                    </p>
+                    <!-- OpenStreetMap iframe for Karuizawa -->
+                    <div class="rounded-xl overflow-hidden border border-gray-200 h-48">
+                        <iframe width="100%" height="100%" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://www.openstreetmap.org/export/embed.html?bbox=138.6318%2C36.3533%2C138.6388%2C36.3603&amp;layer=mapnik&amp;marker=36.3568%2C138.6353" style="border: 0;"></iframe>
+                    </div>
+                    <p class="text-xs text-center text-gray-400 mt-2">輕井澤銀座通周邊地圖</p>
+                </div>
+            </div>
+
+        </section>
+
+        <section id="tab-wallet" class="tab-content px-4 py-6 space-y-6">
+            
+            <!-- Converter Card -->
+            <div class="bg-muji-blue text-white rounded-2xl p-5 shadow-lg">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="font-bold text-lg"><i class="fa-solid fa-calculator mr-2"></i>匯率與記帳計算</h2>
+                    <div class="flex items-center text-sm bg-white/20 rounded-lg px-2 py-1">
+                        <label for="exchangeRate" class="mr-2">匯率</label>
+                        <input type="number" id="exchangeRate" value="0.21" step="0.001" class="w-16 bg-transparent text-white font-bold outline-none text-right placeholder-white/50">
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-xl p-1 flex items-center shadow-inner">
+                    <span class="text-gray-400 px-3 font-bold">¥</span>
+                    <input type="text" id="calcInput" placeholder="輸入日幣金額或算式 (如 500+200*3)" class="flex-1 bg-transparent text-muji-text font-bold text-lg py-2 outline-none w-full" oninput="updateCalcPreview()">
+                </div>
+                
+                <div class="flex justify-between items-end mt-4">
+                    <div class="text-white/80 text-sm" id="calcPreview">等於: ¥ 0</div>
+                    <div class="text-right">
+                        <div class="text-xs text-white/80 mb-1">折合台幣</div>
+                        <div class="text-3xl font-bold">NT$ <span id="twdResult">0</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add Expense Form -->
+            <div class="bg-white rounded-2xl p-5 shadow-muji border border-muji-border">
+                <h3 class="font-bold text-muji-text mb-4 text-sm">新增記帳紀錄</h3>
+                <div class="space-y-3">
+                    <input type="text" id="expenseItem" placeholder="品項名稱 (例: 淺野屋麵包)" class="w-full bg-muji-bg rounded-lg px-4 py-3 text-sm outline-none border border-transparent focus:border-muji-blue transition-colors">
+                    
+                    <div class="flex gap-3">
+                        <label class="flex-1 bg-muji-bg rounded-lg border border-dashed border-gray-300 flex flex-col items-center justify-center py-4 cursor-pointer hover:bg-gray-50 transition-colors btn-active relative overflow-hidden">
+                            <i class="fa-solid fa-camera text-xl text-muji-subtext mb-1" id="photoIcon"></i>
+                            <span class="text-xs text-muji-subtext" id="photoLabel">拍照/上傳</span>
+                            <input type="file" id="expensePhoto" accept="image/*" class="hidden" onchange="handlePhotoUpload(event)">
+                            <img id="photoPreview" class="absolute inset-0 w-full h-full object-cover hidden">
+                        </label>
+                        <button onclick="saveExpense()" class="flex-[2] bg-muji-text text-white rounded-lg font-bold text-sm shadow-md btn-active transition-transform flex items-center justify-center">
+                            <i class="fa-solid fa-plus mr-2"></i>儲存紀錄
+                        </button>
+                    </div>
+                    <p class="text-[10px] text-gray-400 text-center">※ 照片會自動壓縮儲存於瀏覽器，重整不消失。</p>
+                </div>
+            </div>
+
+            <!-- Expense List -->
+            <div>
+                <div class="flex justify-between items-center mb-3 px-1">
+                    <h3 class="font-bold text-muji-text text-sm">記帳歷史</h3>
+                    <button onclick="clearExpenses()" class="text-xs text-red-400 hover:text-red-500"><i class="fa-solid fa-trash-can mr-1"></i>清除全部</button>
+                </div>
+                <ul id="expenseList" class="space-y-3">
+                    <!-- Javascript will populate this -->
+                </ul>
+            </div>
+            
+        </section>
+
+        <section id="tab-lists" class="tab-content px-4 py-6 space-y-8">
+            
+            <!-- Checklist -->
+            <div class="bg-white rounded-2xl p-5 shadow-muji border border-muji-border">
+                <h2 class="font-bold text-lg text-muji-text mb-4 border-b border-gray-100 pb-2"><i class="fa-solid fa-clipboard-check text-muji-blue mr-2"></i>行前準備 CheckList</h2>
+                <ul class="space-y-3" id="checklist">
+                    <!-- Items -->
+                    <li>
+                        <label class="flex items-center space-x-3 cursor-pointer group">
+                            <input type="checkbox" class="checklist-item w-5 h-5 rounded border-gray-300 text-muji-blue focus:ring-muji-blue" data-id="chk-passport">
+                            <span class="text-muji-text group-hover:text-black transition-colors">護照 (檢查效期)</span>
+                        </label>
+                    </li>
+                    <li>
+                        <label class="flex items-center space-x-3 cursor-pointer group">
+                            <input type="checkbox" class="checklist-item w-5 h-5 rounded border-gray-300 text-muji-blue focus:ring-muji-blue" data-id="chk-jpy">
+                            <span class="text-muji-text group-hover:text-black transition-colors">日幣現金 & 信用卡</span>
+                        </label>
+                    </li>
+                    <li>
+                        <label class="flex items-center space-x-3 cursor-pointer group">
+                            <input type="checkbox" class="checklist-item w-5 h-5 rounded border-gray-300 text-muji-blue focus:ring-muji-blue" data-id="chk-power">
+                            <span class="text-muji-text group-hover:text-black transition-colors">行動電源 & 充電線</span>
+                        </label>
+                    </li>
+                    <li>
+                        <label class="flex items-center space-x-3 cursor-pointer group">
+                            <input type="checkbox" class="checklist-item w-5 h-5 rounded border-gray-300 text-muji-blue focus:ring-muji-blue" data-id="chk-vjw">
+                            <span class="text-muji-text group-hover:text-black transition-colors">Visit Japan Web (截圖 QR Code)</span>
+                        </label>
+                    </li>
+                    <li>
+                        <label class="flex items-center space-x-3 cursor-pointer group">
+                            <input type="checkbox" class="checklist-item w-5 h-5 rounded border-gray-300 text-muji-blue focus:ring-muji-blue" data-id="chk-sim">
+                            <span class="text-muji-text group-hover:text-black transition-colors">網卡 / eSIM</span>
+                        </label>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Notes -->
+            <div class="bg-white rounded-2xl p-5 shadow-muji border border-muji-border flex flex-col">
+                <div class="flex justify-between items-center mb-4 border-b border-gray-100 pb-2">
+                    <h2 class="font-bold text-lg text-muji-text"><i class="fa-solid fa-pen-to-square text-muji-blue mr-2"></i>個人備忘錄</h2>
+                    <button onclick="saveNotes()" class="text-xs bg-muji-blue text-white px-3 py-1 rounded-full btn-active shadow-sm">儲存</button>
+                </div>
+                <textarea id="notesInput" rows="4" class="w-full bg-muji-bg rounded-lg p-3 text-sm outline-none border border-transparent focus:border-muji-blue transition-colors resize-none mb-3" placeholder="貼上網址會自動轉成連結..."></textarea>
+                <div id="notesDisplay" class="text-sm text-muji-text leading-relaxed p-3 bg-gray-50 rounded-lg min-h-[4rem] whitespace-pre-wrap word-break"></div>
+            </div>
+
+        </section>
+
+        <section id="tab-info" class="tab-content px-4 py-6 space-y-6">
+            
+            <div class="grid grid-cols-2 gap-4">
+                <a href="https://tenki.jp/forecast/3/17/" target="_blank" class="bg-white p-4 rounded-2xl shadow-muji border border-muji-border flex flex-col items-center justify-center gap-2 btn-active">
+                    <i class="fa-solid fa-cloud-sun text-3xl text-muji-blue"></i>
+                    <span class="text-sm font-bold text-muji-text">關東天氣</span>
+                </a>
+                <a href="https://vjw-lp.digital.go.jp/zh-hant/" target="_blank" class="bg-white p-4 rounded-2xl shadow-muji border border-muji-border flex flex-col items-center justify-center gap-2 btn-active">
+                    <i class="fa-solid fa-qrcode text-3xl text-muji-blue"></i>
+                    <span class="text-sm font-bold text-muji-text">VJW 入境</span>
+                </a>
+            </div>
+
+            <div class="bg-white rounded-2xl p-5 shadow-muji border border-muji-border">
+                <h2 class="font-bold text-lg text-muji-highlight mb-4 border-b border-gray-100 pb-2"><i class="fa-solid fa-phone-volume mr-2"></i>緊急聯絡資訊</h2>
+                <ul class="space-y-4 text-sm">
+                    <li class="flex items-center justify-between">
+                        <span class="text-muji-subtext">報警 (Police)</span>
+                        <a href="tel:110" class="font-bold text-lg text-muji-text">110</a>
+                    </li>
+                    <li class="flex items-center justify-between">
+                        <span class="text-muji-subtext">救護車/消防 (Ambulance)</span>
+                        <a href="tel:119" class="font-bold text-lg text-muji-text">119</a>
+                    </li>
+                    <li class="flex items-center justify-between">
+                        <span class="text-muji-subtext">台北駐日經濟文化代表處</span>
+                        <a href="tel:+81-3-3280-7811" class="font-bold text-muji-blue">03-3280-7811</a>
+                    </li>
+                    <li class="text-xs text-gray-400 mt-2">※ 護照遺失請盡速聯絡代表處。</li>
+                </ul>
+            </div>
+
+            <div class="bg-white rounded-2xl p-5 shadow-muji border border-muji-border">
+                <h2 class="font-bold text-lg text-muji-text mb-3 border-b border-gray-100 pb-2"><i class="fa-solid fa-circle-exclamation text-muji-blue mr-2"></i>旅遊注意事項</h2>
+                <ul class="text-sm text-muji-subtext list-disc pl-5 space-y-2">
+                    <li>日本電車內請將手機設為靜音，且**不要講電話**。</li>
+                    <li>多數餐廳不接受自行找座位，請在門口等待店員引導。</li>
+                    <li>日本沒有給小費的習慣，直接結帳即可。</li>
+                    <li>肉類製品（含泡麵肉塊、肉乾）嚴禁攜帶回台，以免受罰。</li>
+                    <li>拍攝路人或特色店家前，請先徵求同意（No photo 標示注意）。</li>
+                </ul>
+            </div>
+
+        </section>
+    </main>
+
+    <nav class="fixed bottom-0 left-0 w-full bg-white border-t border-muji-border shadow-[0_-4px_15px_rgba(0,0,0,0.02)] z-50 pb-safe">
+        <ul class="flex justify-around items-center h-16">
+            <li class="flex-1">
+                <button onclick="switchTab('plan', '行程總覽')" class="nav-btn w-full h-full flex flex-col items-center justify-center text-muji-blue gap-1 active:scale-95 transition-transform" data-tab="plan">
+                    <i class="fa-regular fa-calendar-days text-xl"></i>
+                    <span class="text-[10px] font-medium">PLAN</span>
+                </button>
+            </li>
+            <li class="flex-1">
+                <button onclick="switchTab('guide', '深度導覽')" class="nav-btn w-full h-full flex flex-col items-center justify-center text-muji-subtext gap-1 active:scale-95 transition-transform" data-tab="guide">
+                    <i class="fa-regular fa-compass text-xl"></i>
+                    <span class="text-[10px] font-medium">GUIDE</span>
+                </button>
+            </li>
+            <li class="flex-1">
+                <button onclick="switchTab('wallet', '記帳與匯率')" class="nav-btn w-full h-full flex flex-col items-center justify-center text-muji-subtext gap-1 active:scale-95 transition-transform" data-tab="wallet">
+                    <i class="fa-solid fa-wallet text-xl"></i>
+                    <span class="text-[10px] font-medium">WALLET</span>
+                </button>
+            </li>
+            <li class="flex-1">
+                <button onclick="switchTab('lists', '清單與備忘錄')" class="nav-btn w-full h-full flex flex-col items-center justify-center text-muji-subtext gap-1 active:scale-95 transition-transform" data-tab="lists">
+                    <i class="fa-solid fa-list-check text-xl"></i>
+                    <span class="text-[10px] font-medium">LISTS</span>
+                </button>
+            </li>
+            <li class="flex-1">
+                <button onclick="switchTab('info', '實用資訊')" class="nav-btn w-full h-full flex flex-col items-center justify-center text-muji-subtext gap-1 active:scale-95 transition-transform" data-tab="info">
+                    <i class="fa-solid fa-circle-info text-xl"></i>
+                    <span class="text-[10px] font-medium">INFO</span>
+                </button>
+            </li>
+        </ul>
+    </nav>
+
+    <script>
+        // --- 1. Tab Switching Logic ---
+        function switchTab(tabId, title) {
+            // Update Title
+            document.getElementById('header-title').innerText = title;
+            
+            // Hide all contents
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            // Show target
+            document.getElementById('tab-' + tabId).classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // Update Nav styles
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                if(btn.getAttribute('data-tab') === tabId) {
+                    btn.classList.remove('text-muji-subtext');
+                    btn.classList.add('text-muji-blue');
+                } else {
+                    btn.classList.add('text-muji-subtext');
+                    btn.classList.remove('text-muji-blue');
+                }
+            });
+        }
+
+        // --- 2. Wallet & Calculator Logic ---
+        let currentPhotoBase64 = null;
+        let expenses = JSON.parse(localStorage.getItem('kanto_expenses')) || [];
+
+        // Safe evaluate math string
+        function evaluateMath(input) {
+            try {
+                // Only allow numbers and basic math operators
+                const sanitized = input.replace(/[^0-9+\-*/().]/g, '');
+                if (!sanitized) return 0;
+                // Using Function instead of eval for slightly better safety context
+                const result = new Function('return ' + sanitized)();
+                return isNaN(result) || !isFinite(result) ? 0 : Math.round(result);
+            } catch (e) {
+                return 0;
+            }
+        }
+
+        function updateCalcPreview() {
+            const input = document.getElementById('calcInput').value;
+            const rate = parseFloat(document.getElementById('exchangeRate').value) || 0.21;
+            const jpyAmount = evaluateMath(input);
+            const twdAmount = Math.round(jpyAmount * rate);
+            
+            document.getElementById('calcPreview').innerText = `等於: ¥ ${jpyAmount.toLocaleString()}`;
+            document.getElementById('twdResult').innerText = twdAmount.toLocaleString();
+        }
+
+        // Add Event Listeners for Calculator
+        document.getElementById('exchangeRate').addEventListener('input', updateCalcPreview);
+
+        // Image compression using Canvas
+        function handlePhotoUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const MAX_WIDTH = 200; // Limit size for LocalStorage limit
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > MAX_WIDTH) {
+                        height = Math.round((height * MAX_WIDTH) / width);
+                        width = MAX_WIDTH;
+                    }
+                    canvas.width = width;
+                    canvas.height = height;
+                    
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+                    
+                    // Compress to JPEG 60% quality
+                    currentPhotoBase64 = canvas.toDataURL('image/jpeg', 0.6);
+                    
+                    // Update UI
+                    const preview = document.getElementById('photoPreview');
+                    preview.src = currentPhotoBase64;
+                    preview.classList.remove('hidden');
+                    document.getElementById('photoIcon').classList.add('hidden');
+                    document.getElementById('photoLabel').classList.add('hidden');
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function saveExpense() {
+            const itemInput = document.getElementById('expenseItem').value.trim();
+            const calcInput = document.getElementById('calcInput').value.trim();
+            const jpyAmount = evaluateMath(calcInput);
+            const rate = parseFloat(document.getElementById('exchangeRate').value) || 0.21;
+            const twdAmount = Math.round(jpyAmount * rate);
+
+            if (!itemInput || jpyAmount <= 0) {
+                showToast('請輸入有效品項名稱與金額');
+                return;
+            }
+
+            const expense = {
+                id: Date.now(),
+                item: itemInput,
+                jpy: jpyAmount,
+                twd: twdAmount,
+                photo: currentPhotoBase64,
+                date: new Date().toLocaleDateString('zh-TW', {month:'2-digit', day:'2-digit'})
+            };
+
+            expenses.unshift(expense); // Add to top
+            
+            try {
+                localStorage.setItem('kanto_expenses', JSON.stringify(expenses));
+            } catch (e) {
+                // If quota exceeded
+                showToast('儲存空間已滿，請清除部分歷史紀錄');
+                expenses.shift(); // remove the one we just added
+                return;
+            }
+
+            // Reset Form
+            document.getElementById('expenseItem').value = '';
+            document.getElementById('calcInput').value = '';
+            currentPhotoBase64 = null;
+            document.getElementById('photoPreview').classList.add('hidden');
+            document.getElementById('photoIcon').classList.remove('hidden');
+            document.getElementById('photoLabel').classList.remove('hidden');
+            updateCalcPreview();
+            
+            renderExpenses();
+            showToast('已儲存紀錄');
+        }
+
+        function renderExpenses() {
+            const list = document.getElementById('expenseList');
+            list.innerHTML = '';
+            
+            if (expenses.length === 0) {
+                list.innerHTML = '<li class="text-center text-muji-subtext text-xs py-4">尚無記帳紀錄</li>';
+                return;
+            }
+
+            expenses.forEach(exp => {
+                const li = document.createElement('li');
+                li.className = 'bg-white rounded-xl p-3 shadow-sm border border-gray-100 flex items-center gap-3';
+                
+                let photoHTML = `<div class="w-12 h-12 bg-muji-bg rounded-lg flex items-center justify-center text-gray-300"><i class="fa-solid fa-receipt"></i></div>`;
+                if (exp.photo) {
+                    photoHTML = `<img src="${exp.photo}" class="w-12 h-12 rounded-lg object-cover border border-gray-100">`;
+                }
+
+                li.innerHTML = `
+                    ${photoHTML}
+                    <div class="flex-1">
+                        <div class="font-medium text-sm text-muji-text line-clamp-1">${exp.item}</div>
+                        <div class="text-[10px] text-muji-subtext">${exp.date}</div>
+                    </div>
+                    <div class="text-right">
+                        <div class="font-bold text-sm text-muji-text">¥ ${exp.jpy.toLocaleString()}</div>
+                        <div class="text-xs text-muji-blue">NT$ ${exp.twd.toLocaleString()}</div>
+                    </div>
+                `;
+                list.appendChild(li);
+            });
+        }
+
+        function clearExpenses() {
+            if(confirm('確定要清除所有記帳紀錄嗎？(無法復原)')) {
+                expenses = [];
+                localStorage.removeItem('kanto_expenses');
+                renderExpenses();
+            }
+        }
+
+        // --- 3. Lists & Notes Logic ---
+        function initLists() {
+            // Checkboxes
+            document.querySelectorAll('.checklist-item').forEach(checkbox => {
+                const id = checkbox.getAttribute('data-id');
+                const saved = localStorage.getItem(id);
+                if (saved === 'true') {
+                    checkbox.checked = true;
+                    checkbox.nextElementSibling.classList.add('line-through', 'text-gray-300');
+                }
+
+                checkbox.addEventListener('change', (e) => {
+                    localStorage.setItem(id, e.target.checked);
+                    if(e.target.checked) {
+                        e.target.nextElementSibling.classList.add('line-through', 'text-gray-300');
+                    } else {
+                        e.target.nextElementSibling.classList.remove('line-through', 'text-gray-300');
+                    }
+                });
+            });
+
+            // Notes
+            const savedNotes = localStorage.getItem('kanto_notes') || '';
+            document.getElementById('notesInput').value = savedNotes;
+            updateNotesDisplay(savedNotes);
+        }
+
+        function saveNotes() {
+            const text = document.getElementById('notesInput').value;
+            localStorage.setItem('kanto_notes', text);
+            updateNotesDisplay(text);
+            showToast('備忘錄已儲存');
+        }
+
+        function updateNotesDisplay(text) {
+            const display = document.getElementById('notesDisplay');
+            if(!text.trim()) {
+                display.innerHTML = '<span class="text-gray-400 italic text-xs">目前無備忘錄內容...</span>';
+                return;
+            }
+            // URL to Link Regex
+            const urlRegex = /(https?:\/\/[^\s]+)/g;
+            const linkedText = text.replace(urlRegex, function(url) {
+                return `<a href="${url}" target="_blank" class="text-muji-blue underline font-medium">${url}</a>`;
+            });
+            display.innerHTML = linkedText;
+        }
+
+        // --- Utility: Toast Notification ---
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'fixed top-20 left-1/2 transform -translate-x-1/2 bg-muji-text text-white px-4 py-2 rounded-full shadow-lg text-sm z-50 animate-bounce';
+            toast.innerText = message;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 2000);
+        }
+
+        // --- Initialize App ---
+        window.onload = () => {
+            renderExpenses();
+            initLists();
+        };
+    </script>
+</body>
+</html>
